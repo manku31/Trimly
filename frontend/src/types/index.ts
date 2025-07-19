@@ -40,6 +40,7 @@ export interface Barber {
   rating: number;
   specialties: string[];
   isAvailable: boolean;
+  experience: string; // Added experience field
 }
 
 export interface QueueEntry {

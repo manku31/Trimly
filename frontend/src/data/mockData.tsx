@@ -40,6 +40,7 @@ export const mockBarbers: Barber[] = [
     rating: 4.8,
     specialties: ["Classic Cuts", "Beard Styling"],
     isAvailable: true,
+    experience: "5+ years", // Added experience field
   },
   {
     id: "2",
@@ -49,6 +50,7 @@ export const mockBarbers: Barber[] = [
     rating: 4.9,
     specialties: ["Modern Cuts", "Hot Shaves"],
     isAvailable: true,
+    experience: "8+ years", // Added experience field
   },
   {
     id: "3",
@@ -58,6 +60,7 @@ export const mockBarbers: Barber[] = [
     rating: 4.7,
     specialties: ["Fade Cuts", "Hair Styling"],
     isAvailable: false,
+    experience: "3+ years", // Added experience field
   },
 ];
 
@@ -110,6 +113,48 @@ export const mockBarberShops: BarberShop[] = [
 ];
 
 export const mockQueueEntries: QueueEntry[] = [
+  // Active Services (in-progress)
+  {
+    id: "active-1",
+    customerId: "user3",
+    customerName: "Michael Davis",
+    shopId: "1",
+    barberId: "1", // Mike Johnson
+    serviceId: "1", // Classic Haircut
+    position: 0,
+    estimatedWaitTime: 0,
+    status: "in-progress",
+    joinedAt: new Date(Date.now() - 20 * 60 * 1000), // Started 20 minutes ago
+    notificationSent: true,
+  },
+  {
+    id: "active-2",
+    customerId: "user4",
+    customerName: "Emma Wilson",
+    shopId: "1",
+    barberId: "2", // Carlos Rodriguez
+    serviceId: "3", // Hair Wash & Cut
+    position: 0,
+    estimatedWaitTime: 0,
+    status: "in-progress",
+    joinedAt: new Date(Date.now() - 15 * 60 * 1000), // Started 15 minutes ago
+    notificationSent: true,
+  },
+  {
+    id: "active-3",
+    customerId: "user5",
+    customerName: "Robert Brown",
+    shopId: "1",
+    barberId: "3", // Alex Thompson
+    serviceId: "4", // Hot Towel Shave
+    position: 0,
+    estimatedWaitTime: 0,
+    status: "in-progress",
+    joinedAt: new Date(Date.now() - 25 * 60 * 1000), // Started 25 minutes ago
+    notificationSent: true,
+  },
+
+  // Waiting Queue
   {
     id: "1",
     customerId: "user1",
@@ -135,5 +180,46 @@ export const mockQueueEntries: QueueEntry[] = [
     status: "waiting",
     joinedAt: new Date(Date.now() - 5 * 60 * 1000),
     notificationSent: false,
+  },
+  {
+    id: "queue-3",
+    customerId: "user6",
+    customerName: "David Martinez",
+    shopId: "1",
+    barberId: undefined, // Not assigned yet
+    serviceId: "2", // Beard Trim
+    position: 3,
+    estimatedWaitTime: 25,
+    status: "waiting",
+    joinedAt: new Date(Date.now() - 2 * 60 * 1000),
+    notificationSent: false,
+  },
+
+  // Completed Services (for earnings calculation)
+  {
+    id: "completed-1",
+    customerId: "user7",
+    customerName: "Jennifer Lee",
+    shopId: "1",
+    barberId: "1",
+    serviceId: "1",
+    position: 0,
+    estimatedWaitTime: 0,
+    status: "completed",
+    joinedAt: new Date(Date.now() - 60 * 60 * 1000), // 1 hour ago
+    notificationSent: true,
+  },
+  {
+    id: "completed-2",
+    customerId: "user8",
+    customerName: "Thomas Anderson",
+    shopId: "1",
+    barberId: "2",
+    serviceId: "4",
+    position: 0,
+    estimatedWaitTime: 0,
+    status: "completed",
+    joinedAt: new Date(Date.now() - 90 * 60 * 1000), // 1.5 hours ago
+    notificationSent: true,
   },
 ];
