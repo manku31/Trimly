@@ -31,6 +31,7 @@ export interface Service {
   price: number;
   duration: number; // in minutes
   description: string;
+  category: string; // Add this line
 }
 
 export interface Barber {

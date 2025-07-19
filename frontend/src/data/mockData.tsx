@@ -7,6 +7,7 @@ export const mockServices: Service[] = [
     price: 25,
     duration: 30,
     description: "Traditional haircut with styling",
+    category: "haircuts", // Add this
   },
   {
     id: "2",
@@ -14,6 +15,7 @@ export const mockServices: Service[] = [
     price: 15,
     duration: 20,
     description: "Professional beard shaping and trimming",
+    category: "grooming", // Add this
   },
   {
     id: "3",
@@ -21,6 +23,7 @@ export const mockServices: Service[] = [
     price: 35,
     duration: 45,
     description: "Complete service with wash, cut, and style",
+    category: "haircuts", // Add this
   },
   {
     id: "4",
@@ -28,6 +31,7 @@ export const mockServices: Service[] = [
     price: 30,
     duration: 40,
     description: "Traditional hot towel shave experience",
+    category: "grooming", // Add this
   },
 ];
 
