@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { mockBarberShops, mockServices } from "../../data/mockData";
 import type { Service } from "../../types";
 import Header from "../../components/common/Header";
@@ -13,7 +13,7 @@ import ServicesTab from "../../components/barber/dashboard/ServicesTab";
 import AnalyticsTab from "../../components/barber/dashboard/AnalyticsTab";
 import DashboardLayout from "../../components/barber/dashboard/DashboardLayout";
 
-function BarberDashboard() {
+const BarberDashboard: React.FC = () => {
   const [services] = useState<Service[]>(mockServices);
   const [shop, setShop] = useState<BarberShop>(mockBarberShops[0]);
 
@@ -85,6 +85,6 @@ function BarberDashboard() {
       </div>
     </div>
   );
-}
+};
 
 export default BarberDashboard;

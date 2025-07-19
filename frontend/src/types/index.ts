@@ -66,3 +66,34 @@ export interface Notification {
   timestamp: Date;
   read: boolean;
 }
+
+export interface BarberSignupData {
+  // Step 1: Basic Information
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+  confirmPassword: string;
+
+  // Step 2: Verification
+  otp: string;
+  verificationType: "email" | "phone";
+
+  // Step 3: Shop Details
+  shopName: string;
+  address: string;
+  googleLocation: string;
+  gstNumber: string;
+  services: string[];
+  workingHours: {
+    start: string;
+    end: string;
+  };
+}
+
+export interface SignupStep {
+  step: number;
+  title: string;
+  isCompleted: boolean;
+  isActive: boolean;
+}
