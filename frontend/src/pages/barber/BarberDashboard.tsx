@@ -15,7 +15,7 @@ import DashboardLayout from "../../components/barber/dashboard/DashboardLayout";
 
 function BarberDashboard() {
   const [services] = useState<Service[]>(mockServices);
-  const shop = mockBarberShops[0];
+  const [shop, setShop] = useState<BarberShop>(mockBarberShops[0]);
 
   const {
     queueEntries,
@@ -27,6 +27,10 @@ function BarberDashboard() {
 
   const { activeTab, setActiveTab, shopStatus, setShopStatus } =
     useDashboardState();
+
+  const handleUpdateShop = (updatedShop: BarberShop) => {
+    setShop(updatedShop);
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -59,13 +63,14 @@ function BarberDashboard() {
   };
 
   return (
-    <div className="min-h-screen w-screen bg-gradient-to-br from-gray-50 via-slate-100 to-zinc-100">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-blue-50">
       <Header />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="container mx-auto px-4 py-8">
         <DashboardHeader
           shopStatus={shopStatus}
           onShopStatusChange={setShopStatus}
+          shop={shop}
+          onUpdateShop={handleUpdateShop}
         />
 
         <StatusCards

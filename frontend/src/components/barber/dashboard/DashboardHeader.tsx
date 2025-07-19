@@ -1,14 +1,23 @@
 import { Power, Bell } from "lucide-react";
+import { useState } from "react";
+import SettingsModal from "../modal/SettingsModal";
+import type { BarberShop } from "../../../types";
 
 interface DashboardHeaderProps {
   shopStatus: boolean;
   onShopStatusChange: (status: boolean) => void;
+  shop: BarberShop;
+  onUpdateShop: (updatedShop: BarberShop) => void;
 }
 
 function DashboardHeader({
   shopStatus,
   onShopStatusChange,
+  shop,
+  onUpdateShop,
 }: DashboardHeaderProps) {
+  const [showSettings, setShowSettings] = useState(false);
+
   return (
     <div className="mb-8 animate-fadeInUp">
       <div className="flex items-center justify-between">
@@ -17,7 +26,7 @@ function DashboardHeader({
             Barber Dashboard
           </h1>
           <p className="text-gray-600">
-            Manage your queue and services at Elite Cuts Barbershop
+            Manage your queue and services at {shop.name}
           </p>
         </div>
 
@@ -63,12 +72,22 @@ function DashboardHeader({
               <span>Notifications</span>
             </button>
 
-            <button className="gradient-bg text-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+            <button
+              onClick={() => setShowSettings(true)}
+              className="gradient-bg text-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+            >
               Settings
             </button>
           </div>
         </div>
       </div>
+
+      <SettingsModal
+        open={showSettings}
+        onClose={() => setShowSettings(false)}
+        shop={shop}
+        onUpdateShop={onUpdateShop}
+      />
     </div>
   );
 }
