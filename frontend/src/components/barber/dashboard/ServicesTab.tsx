@@ -7,8 +7,12 @@ import {
   Plus,
   Search,
   Filter,
+  Eye,
 } from "lucide-react";
 import type { Service, QueueEntry } from "../../../types";
+import AddServiceModal from "../modal/AddServiceModal";
+import ViewServiceModal from "../modal/ViewServiceModal";
+import EditServiceModal from "../modal/EditServiceModal";
 
 interface ServicesTabProps {
   services: Service[];
@@ -19,13 +23,20 @@ function ServicesTab({ services, queueEntries }: ServicesTabProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [editingService, setEditingService] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [localServices, setLocalServices] = useState<Service[]>(services);
 
   const categories = [
     "all",
-    ...new Set(services.map((service) => service.category || "uncategorized")),
+    ...new Set(
+      localServices.map((service) => service.category || "uncategorized")
+    ),
   ];
 
-  const filteredServices = services.filter((service) => {
+  const filteredServices = localServices.filter((service) => {
     const matchesSearch =
       service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       service.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -52,8 +63,30 @@ function ServicesTab({ services, queueEntries }: ServicesTabProps) {
       waiting: waiting.length,
       totalRevenue:
         completedServices.length *
-          services.find((s) => s.id === serviceId)?.price || 0,
+        (services.find((s) => s.id === serviceId)?.price || 0),
     };
+  };
+
+  const handleAddService = (service: Service) => {
+    setLocalServices((prev) => [...prev, service]);
+  };
+
+  const handleUpdateService = (updatedService: Service) => {
+    setLocalServices((prev) =>
+      prev.map((service) =>
+        service.id === updatedService.id ? updatedService : service
+      )
+    );
+  };
+
+  const handleViewDetails = (service: Service) => {
+    setSelectedService(service);
+    setShowViewModal(true);
+  };
+
+  const handleEditService = (service: Service) => {
+    setSelectedService(service);
+    setShowEditModal(true);
   };
 
   return (
@@ -63,11 +96,40 @@ function ServicesTab({ services, queueEntries }: ServicesTabProps) {
         <h2 className="text-2xl font-bold text-gray-900">
           Services Management
         </h2>
-        <button className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all duration-300 transform hover:scale-105 flex items-center space-x-2">
+        <button
+          className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all duration-300 transform hover:scale-105 flex items-center space-x-2"
+          onClick={() => setShowModal(true)}
+        >
           <Plus size={16} />
           <span>Add Service</span>
         </button>
       </div>
+
+      <AddServiceModal
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        onAdd={handleAddService}
+      />
+
+      <ViewServiceModal
+        open={showViewModal}
+        onClose={() => {
+          setShowViewModal(false);
+          setSelectedService(null);
+        }}
+        service={selectedService}
+        queueEntries={queueEntries}
+      />
+
+      <EditServiceModal
+        open={showEditModal}
+        onClose={() => {
+          setShowEditModal(false);
+          setSelectedService(null);
+        }}
+        service={selectedService}
+        onUpdate={handleUpdateService}
+      />
 
       {/* Search and Filters */}
       <div className="bg-gray-50 rounded-xl p-4">
@@ -130,12 +192,6 @@ function ServicesTab({ services, queueEntries }: ServicesTabProps) {
                   </div>
 
                   <div className="flex space-x-1 ml-2">
-                    <button
-                      onClick={() => setEditingService(service.id)}
-                      className="text-gray-400 hover:text-blue-600 p-1 rounded transition-colors"
-                    >
-                      <Edit size={16} />
-                    </button>
                     <button className="text-gray-400 hover:text-red-600 p-1 rounded transition-colors">
                       <Trash2 size={16} />
                     </button>
@@ -185,22 +241,30 @@ function ServicesTab({ services, queueEntries }: ServicesTabProps) {
                     </div>
                   </div>
 
-                  {stats.totalRevenue > 0 && (
+                  {/* {stats.totalRevenue > 0 && (
                     <div className="mt-3 p-2 bg-green-50 rounded-lg text-center">
                       <div className="text-sm font-medium text-green-800">
                         Revenue: ${stats.totalRevenue}
                       </div>
                     </div>
-                  )}
+                  )} */}
                 </div>
 
                 {/* Action Buttons */}
                 <div className="mt-4 flex space-x-2">
-                  <button className="flex-1 bg-teal-600 text-white py-2 px-3 rounded-lg hover:bg-teal-700 transition-all duration-300 text-sm">
-                    View Details
+                  <button
+                    className="flex-1 bg-teal-600 text-white py-2 px-3 rounded-lg hover:bg-teal-700 transition-all duration-300 text-sm flex items-center justify-center space-x-1"
+                    onClick={() => handleViewDetails(service)}
+                  >
+                    <Eye size={14} />
+                    <span>View Details</span>
                   </button>
-                  <button className="flex-1 bg-gray-600 text-white py-2 px-3 rounded-lg hover:bg-gray-700 transition-all duration-300 text-sm">
-                    Edit Service
+                  <button
+                    className="flex-1 bg-gray-600 text-white py-2 px-3 rounded-lg hover:bg-gray-700 transition-all duration-300 text-sm flex items-center justify-center space-x-1"
+                    onClick={() => handleEditService(service)}
+                  >
+                    <Edit size={14} />
+                    <span>Edit Service</span>
                   </button>
                 </div>
               </div>
