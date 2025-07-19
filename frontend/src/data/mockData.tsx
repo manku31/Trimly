@@ -1,5 +1,4 @@
-import { BarberShop, Service, Barber, QueueEntry } from "../types";
-
+import type { BarberShop, Service, Barber, QueueEntry } from "../types/index";
 
 export const mockServices: Service[] = [
   {
