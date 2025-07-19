@@ -95,7 +95,7 @@ const BarberSignup: React.FC = () => {
           <p className="text-gray-500 text-sm">
             Already have an account?{" "}
             <button
-              onClick={() => navigate("/signin")}
+              onClick={() => navigate("/barber/login")}
               className="text-blue-600 hover:text-blue-700 font-medium"
             >
               Sign in here

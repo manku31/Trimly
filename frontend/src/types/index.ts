@@ -97,3 +97,32 @@ export interface SignupStep {
   isCompleted: boolean;
   isActive: boolean;
 }
+
+export interface BarberLoginData {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+  otp?: string;
+  verificationType?: "email" | "phone";
+}
+
+export interface LoginResponse {
+  success: boolean;
+  token?: string;
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    shopName: string;
+    phone: string;
+  };
+  message?: string;
+  requiresOTP?: boolean;
+  verificationType?: "email" | "phone";
+}
+
+export interface LoginStep {
+  step: 1 | 2; // 1: credentials, 2: OTP
+  title: string;
+  description: string;
+}
