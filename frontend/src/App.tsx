@@ -10,7 +10,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
+        {/* <Route path="/" element={<BarberDashboard />} /> */}
+        <Route path="/login" element={<Login />} />
         <Route path="/signin" element={<Signin />} />
 
         {/* Catch-all route for 404 errors */}
