@@ -28,7 +28,7 @@ const BarberSignup: React.FC = () => {
     try {
       await submitSignup();
       // Navigate to dashboard after successful signup
-      navigate("/");
+      navigate("/barber/dashboard");
     } catch (error) {
       console.error("Signup failed:", error);
       // Handle error (show toast, etc.)

@@ -50,7 +50,7 @@ const BarberLogin: React.FC = () => {
     const result = await verifyOTP();
 
     if (result.success) {
-      navigate("/");
+      navigate("/barber/dashboard");
     }
   };
 
