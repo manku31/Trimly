@@ -40,11 +40,11 @@ export const mockBarbers: Barber[] = [
     id: "1",
     name: "Mike Johnson",
     avatar:
-      "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=150",
-    rating: 4.8,
-    specialties: ["Classic Cuts", "Beard Styling"],
+      "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150",
+    rating: 4.7,
+    specialties: ["Modern Styles", "Fades"],
     isAvailable: true,
-    experience: "5+ years", // Added experience field
+    experience: "5 years exp", // Added experience field
   },
   {
     id: "2",
@@ -66,53 +66,269 @@ export const mockBarbers: Barber[] = [
     isAvailable: false,
     experience: "3+ years", // Added experience field
   },
+  {
+    id: "4",
+    name: "John Smith",
+    avatar:
+      "https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=150",
+    rating: 4.9,
+    specialties: ["Classic Cuts", "Beard Grooming"],
+    isAvailable: true,
+    experience: "8 years exp", // Added experience field
+  },
+  {
+    id: "5",
+    name: "David Wilson",
+    avatar:
+      "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=150",
+    rating: 4.8,
+    specialties: ["Hair Styling", "Color"],
+    isAvailable: true,
+    experience: "6 years exp", // Added experience field
+  },
 ];
 
+// Make sure all shop objects have the services property
 export const mockBarberShops: BarberShop[] = [
   {
     id: "1",
-    name: "Elite Cuts Barbershop",
-    address: "123 Main Street, Downtown",
+    name: "Classic Cuts Barbershop",
+    address: "123 Main Street, Downtown, New York, NY 10001",
+    image:
+      "https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&w=800",
     rating: 4.8,
     reviewCount: 127,
-    image:
-      "https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg?auto=compress&cs=tinysrgb&w=500",
-    services: mockServices,
-    barbers: mockBarbers,
-    queueLength: 3,
     isOpen: true,
-    distance: 0.8,
+    queueLength: 3,
+    distance: 0.5,
     coordinates: { lat: 40.7128, lng: -74.006 },
+    services: [
+      {
+        id: "s1",
+        name: "Classic Haircut",
+        description: "Traditional haircut with styling",
+        price: 25,
+        duration: 30,
+      },
+      {
+        id: "s2",
+        name: "Beard Trimming",
+        description: "Professional beard grooming",
+        price: 15,
+        duration: 20,
+      },
+      {
+        id: "s3",
+        name: "Hair Wash & Style",
+        description: "Complete hair wash and styling",
+        price: 35,
+        duration: 45,
+      },
+    ],
+    barbers: [
+      {
+        id: "b1",
+        name: "John Smith",
+        avatar:
+          "https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=150",
+        rating: 4.9,
+        experience: "8 years exp",
+        specialties: ["Classic Cuts", "Beard Grooming"],
+        isAvailable: true,
+      },
+    ],
   },
   {
     id: "2",
-    name: "Classic Gentleman",
-    address: "456 Oak Avenue, Midtown",
+    name: "Modern Style Studio",
+    address: "456 Oak Avenue, Midtown, New York, NY 10017",
+    image:
+      "https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg?auto=compress&cs=tinysrgb&w=800",
     rating: 4.6,
     reviewCount: 89,
-    image:
-      "https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&w=500",
-    services: mockServices.slice(0, 3),
-    barbers: mockBarbers.slice(0, 2),
-    queueLength: 1,
     isOpen: true,
+    queueLength: 5,
     distance: 1.2,
     coordinates: { lat: 40.7589, lng: -73.9851 },
+    services: [
+      {
+        id: "s1",
+        name: "Classic Haircut",
+        description: "Traditional haircut with styling",
+        price: 25,
+        duration: 30,
+      },
+      {
+        id: "s2",
+        name: "Beard Trimming",
+        description: "Professional beard grooming",
+        price: 15,
+        duration: 20,
+      },
+      {
+        id: "s3",
+        name: "Hair Wash & Style",
+        description: "Complete hair wash and styling",
+        price: 35,
+        duration: 45,
+      },
+    ],
+    barbers: [
+      {
+        id: "b2",
+        name: "Carlos Rodriguez",
+        avatar:
+          "https://images.pexels.com/photos/1674752/pexels-photo-1674752.jpeg?auto=compress&cs=tinysrgb&w=150",
+        rating: 4.9,
+        experience: "8+ years",
+        specialties: ["Modern Cuts", "Hot Shaves"],
+        isAvailable: true,
+      },
+    ],
   },
   {
     id: "3",
-    name: "Modern Styles Studio",
-    address: "789 Pine Street, Uptown",
+    name: "Gentleman's Choice",
+    address: "789 Pine Street, Upper East Side, New York, NY 10075",
+    image:
+      "https://images.pexels.com/photos/1570807/pexels-photo-1570807.jpeg?auto=compress&cs=tinysrgb&w=800",
     rating: 4.9,
     reviewCount: 203,
-    image:
-      "https://images.pexels.com/photos/1570807/pexels-photo-1570807.jpeg?auto=compress&cs=tinysrgb&w=500",
-    services: mockServices,
-    barbers: mockBarbers,
-    queueLength: 5,
-    isOpen: true,
+    isOpen: false,
+    queueLength: 0,
     distance: 2.1,
     coordinates: { lat: 40.7831, lng: -73.9712 },
+    services: [
+      {
+        id: "s1",
+        name: "Classic Haircut",
+        description: "Traditional haircut with styling",
+        price: 25,
+        duration: 30,
+      },
+      {
+        id: "s2",
+        name: "Beard Trimming",
+        description: "Professional beard grooming",
+        price: 15,
+        duration: 20,
+      },
+      {
+        id: "s3",
+        name: "Hair Wash & Style",
+        description: "Complete hair wash and styling",
+        price: 35,
+        duration: 45,
+      },
+    ],
+    barbers: [
+      {
+        id: "b3",
+        name: "Alex Thompson",
+        avatar:
+          "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=150",
+        rating: 4.7,
+        experience: "3+ years",
+        specialties: ["Fade Cuts", "Hair Styling"],
+        isAvailable: false,
+      },
+    ],
+  },
+  {
+    id: "4",
+    name: "The Barber's Den",
+    address: "321 Elm Road, Brooklyn, NY 11201",
+    image:
+      "https://images.pexels.com/photos/1805600/pexels-photo-1805600.jpeg?auto=compress&cs=tinysrgb&w=800",
+    rating: 4.7,
+    reviewCount: 156,
+    isOpen: true,
+    queueLength: 2,
+    distance: 3.4,
+    coordinates: { lat: 40.6782, lng: -73.9442 },
+    services: [
+      {
+        id: "s1",
+        name: "Classic Haircut",
+        description: "Traditional haircut with styling",
+        price: 25,
+        duration: 30,
+      },
+      {
+        id: "s2",
+        name: "Beard Trimming",
+        description: "Professional beard grooming",
+        price: 15,
+        duration: 20,
+      },
+      {
+        id: "s3",
+        name: "Hair Wash & Style",
+        description: "Complete hair wash and styling",
+        price: 35,
+        duration: 45,
+      },
+    ],
+    barbers: [
+      {
+        id: "b4",
+        name: "David Wilson",
+        avatar:
+          "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=150",
+        rating: 4.8,
+        experience: "6 years exp",
+        specialties: ["Hair Styling", "Color"],
+        isAvailable: true,
+      },
+    ],
+  },
+  {
+    id: "5",
+    name: "Trim & Style Co.",
+    address: "654 Maple Drive, Queens, NY 11375",
+    image:
+      "https://images.pexels.com/photos/2040627/pexels-photo-2040627.jpeg?auto=compress&cs=tinysrgb&w=800",
+    rating: 4.5,
+    reviewCount: 94,
+    isOpen: true,
+    queueLength: 4,
+    distance: 4.8,
+    coordinates: { lat: 40.7282, lng: -73.7949 },
+    services: [
+      {
+        id: "s1",
+        name: "Classic Haircut",
+        description: "Traditional haircut with styling",
+        price: 25,
+        duration: 30,
+      },
+      {
+        id: "s2",
+        name: "Beard Trimming",
+        description: "Professional beard grooming",
+        price: 15,
+        duration: 20,
+      },
+      {
+        id: "s3",
+        name: "Hair Wash & Style",
+        description: "Complete hair wash and styling",
+        price: 35,
+        duration: 45,
+      },
+    ],
+    barbers: [
+      {
+        id: "b5",
+        name: "Mike Johnson",
+        avatar:
+          "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150",
+        rating: 4.7,
+        experience: "5 years exp",
+        specialties: ["Modern Styles", "Fades"],
+        isAvailable: true,
+      },
+    ],
   },
 ];
 

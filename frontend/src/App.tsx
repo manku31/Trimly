@@ -4,6 +4,8 @@ import BarberDashboard from "./pages/barber/BarberDashboard";
 import BarberLogin from "./pages/barber/BarberLogin";
 import ErrorPage from "./pages/ErrorPage";
 import BarberSignup from "./pages/barber/BarberSignup";
+import UserDashboard from "./pages/users/UserDashboad";
+import ShopDetails from "./pages/users/ShopDetails";
 
 function App() {
   return (
@@ -17,9 +19,11 @@ function App() {
         {/* User Routes */}
         <Route path="/user/login" element={<BarberLogin />} />
         <Route path="/user/signup" element={<BarberSignup />} />
-        <Route path="/user/dashboard" element={<BarberDashboard />} />
-        {/* shop path */}
-        {/* Profile page */}
+        <Route path="/user/dashboard" element={<UserDashboard />} />
+        <Route path="/shop/:shopId" element={<ShopDetails />} />
+
+        {/* Default route */}
+        <Route path="/" element={<UserDashboard />} />
 
         {/* Catch-all route for 404 errors */}
         <Route path="*" element={<ErrorPage />} />
