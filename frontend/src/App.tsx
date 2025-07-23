@@ -6,6 +6,7 @@ import ErrorPage from "./pages/ErrorPage";
 import BarberSignup from "./pages/barber/BarberSignup";
 import UserDashboard from "./pages/users/UserDashboad";
 import ShopDetails from "./pages/users/ShopDetails";
+import QueueStatus from "./pages/users/QueueStatus";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/user/signup" element={<BarberSignup />} />
         <Route path="/user/dashboard" element={<UserDashboard />} />
         <Route path="/shop/:shopId" element={<ShopDetails />} />
+        <Route path="/user/queue/:queueId" element={<QueueStatus />} />
 
         {/* Default route */}
         <Route path="/" element={<UserDashboard />} />

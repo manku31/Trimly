@@ -142,15 +142,27 @@ function ShopDetails() {
       return;
     }
 
-    // In a real app, this would make an API call
-    console.log("Joining queue with:", {
+    // Create queue booking data
+    const queueData = {
+      queueId: `q_${Date.now()}`,
       shopId: shop.id,
-      serviceIds: selectedServices.map((s) => s.id),
-      barberId: selectedBarber?.id || null,
-    });
+      shopName: shop.name,
+      shopAddress: shop.address,
+      services: selectedServices,
+      barber: selectedBarber,
+      totalPrice,
+      totalDuration,
+      queuePosition: shop.queueLength + 1,
+      estimatedWaitTime: (shop.queueLength + 1) * 15,
+      joinedAt: new Date().toISOString(),
+      status: "waiting",
+    };
 
-    const serviceNames = selectedServices.map((s) => s.name).join(", ");
-    alert(`Successfully joined queue at ${shop.name} for ${serviceNames}!`);
+    // Store in localStorage (in real app, this would be an API call)
+    localStorage.setItem("currentQueue", JSON.stringify(queueData));
+
+    // Navigate to queue status page
+    navigate(`/user/queue/${queueData.queueId}`);
   };
 
   const openMaps = () => {
