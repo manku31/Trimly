@@ -91,6 +91,27 @@ export interface BarberSignupData {
   };
 }
 
+export interface UserSignupData {
+  // Step 1: Basic Information
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+  confirmPassword: string;
+  agreeToTerms: boolean;
+
+  // Step 2: Verification
+  otp: string;
+  verificationType: "email" | "phone";
+
+  // Step 3: Location
+  address: string;
+  coordinates: {
+    lat: number;
+    lng: number;
+  } | null;
+}
+
 export interface SignupStep {
   step: number;
   title: string;
