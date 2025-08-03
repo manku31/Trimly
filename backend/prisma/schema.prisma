@@ -8,11 +8,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Test {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  phone     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model User {
+  user_id          Int      @id @default(autoincrement())
+  name             String
+  email            String   @unique
+  phone            String   @unique
+  password         String
+  confirm_Password String
+  verified         Boolean  @default(false)
+  otp              String?
+  otp_expiry       DateTime?
+  location         String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
