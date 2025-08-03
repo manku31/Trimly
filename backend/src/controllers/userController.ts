@@ -1,15 +1,9 @@
 import { Request, Response } from "express";
 import { prisma } from "../lib/prisma";
 import bcrypt from "bcrypt";
+import { TokenServices } from "../utils/tokenService";
 
 export class UserController {
-  testFunc(req: Request, res: Response) {
-    console.log("This is a test function of User.");
-    return res
-      .status(200)
-      .json({ message: "User Test function executed successfully." });
-  }
-
   async createUser(req: Request, res: Response) {
     try {
       const { name, email, phone, password, confirm_Password, location } =
@@ -68,9 +62,16 @@ export class UserController {
         },
       });
 
+      // generate jwt tokem
+      const tokens = TokenServices.generateTokens({
+        user_id: newUser.user_id,
+        email: newUser.email,
+      });
+
       return res.status(201).json({
         message: "User created successfully.",
         user: newUser,
+        tokens,
       });
     } catch (error) {
       console.error("Error creating user:", error);
@@ -93,7 +94,7 @@ export class UserController {
 
       // Find user by email
       const user = await prisma.user.findUnique({
-        where: { email,},
+        where: { email },
       });
 
       // Check if user not exists
@@ -111,6 +112,12 @@ export class UserController {
         });
       }
 
+      // Generate JWT tokens
+      const tokens = TokenServices.generateTokens({
+        user_id: user.user_id,
+        email: user.email,
+      });
+
       // Login the user
       return res.status(200).json({
         message: "User logged in successfully",
@@ -119,11 +126,114 @@ export class UserController {
           name: user.name,
           email: user.email,
         },
+        tokens,
       });
     } catch (error) {
       console.error("Error logging in user:", error);
       return res.status(500).json({
         message: "Internal server error while logging in user.",
+      });
+    }
+  }
+
+  async refreshToken(req: Request, res: Response) {
+    try {
+      const { refreshToken } = req.body;
+
+      if (!refreshToken) {
+        return res.status(400).json({
+          message: "Refresh token is required",
+        });
+      }
+
+      // Verify the refresh token
+      const decoded = TokenServices.verifyRefreshToken(refreshToken);
+
+      if (decoded.type !== "refresh") {
+        return res.status(401).json({
+          message: "Invalid token type",
+        });
+      }
+
+      const user = await prisma.user.findUnique({
+        where: { user_id: decoded.user_id },
+      });
+
+      if (!user) {
+        return res.status(404).json({
+          message: "User not found",
+        });
+      }
+
+      // Generate new tokens
+      const tokens = TokenServices.generateTokens({
+        user_id: user.user_id,
+        email: user.email,
+      });
+
+      return res.status(200).json({
+        message: "Tokens refreshed successfully",
+        tokens,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.name === "TokenExpiredError") {
+          return res.status(401).json({
+            message: "Refresh token has expired",
+          });
+        }
+        if (error.name === "JsonWebTokenError") {
+          return res.status(401).json({
+            message: "Invalid refresh token",
+          });
+        }
+      }
+
+      console.error("Error refreshing token:", error);
+      return res.status(500).json({
+        message: "Internal server error while refreshing token.",
+      });
+    }
+  }
+
+  // Get current user profile (protected route)
+  async getCurrentUser(req: Request, res: Response) {
+    try {
+      const userId = req.user?.user_id;
+
+      if (!userId) {
+        return res.status(401).json({
+          message: "User not authenticated",
+        });
+      }
+
+      const user = await prisma.user.findUnique({
+        where: { user_id: userId },
+        select: {
+          user_id: true,
+          name: true,
+          email: true,
+          phone: true,
+          location: true,
+          verified: true,
+          createdAt: true,
+        },
+      });
+
+      if (!user) {
+        return res.status(404).json({
+          message: "User not found",
+        });
+      }
+
+      return res.status(200).json({
+        message: "User profile retrieved successfully",
+        user,
+      });
+    } catch (error) {
+      console.error("Error getting current user:", error);
+      return res.status(500).json({
+        message: "Internal server error while getting user profile.",
       });
     }
   }
