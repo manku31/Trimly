@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { prisma } from "../lib/prisma";
 import bcrypt from "bcrypt";
+
+import { prisma } from "../lib/prisma";
 import { TokenServices } from "../utils/tokenService";
 
 export class UserController {
@@ -196,7 +197,6 @@ export class UserController {
     }
   }
 
-  // Get current user profile (protected route)
   async getCurrentUser(req: Request, res: Response) {
     try {
       const userId = req.user?.user_id;

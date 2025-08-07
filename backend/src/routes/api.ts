@@ -6,6 +6,6 @@ const router = Router();
 
 // Mount sub-routes
 router.use("/users", userRoutes);
-router.use("/barber", barberRoutes);
+router.use("/barbers", barberRoutes);
 
 export default router;

@@ -9,16 +9,45 @@ datasource db {
 }
 
 model User {
-  user_id          Int      @id @default(autoincrement())
+  user_id          Int       @id @default(autoincrement())
   name             String
-  email            String   @unique
-  phone            String   @unique
+  email            String    @unique
+  phone            String    @unique
   password         String
   confirm_Password String
-  verified         Boolean  @default(false)
+  verified         Boolean   @default(false)
   otp              String?
   otp_expiry       DateTime?
   location         String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model Barber {
+  barber_id        Int           @id @default(autoincrement())
+  name             String
+  email            String        @unique
+  phone            String        @unique
+  password         String
+  confirm_Password String
+  verified         Boolean       @default(false)
+  otp              String?
+  otp_expiry       DateTime?
+  shopValidation   Boolean       @default(false)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  shopDetails      ShopDetails[]
+}
+
+model ShopDetails {
+  shop_id    Int      @id @default(autoincrement())
+  barber_id  Int
+  name       String
+  address    String
+  location   String?
+  gst_number String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  barber Barber @relation(fields: [barber_id], references: [barber_id], onDelete: Cascade)
 }
