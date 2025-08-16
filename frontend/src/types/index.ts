@@ -147,3 +147,8 @@ export interface LoginStep {
   title: string;
   description: string;
 }
+
+export interface SignupResponse {
+  status: string;
+  message: string;
+}

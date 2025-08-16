@@ -1,10 +1,12 @@
 import { useState } from "react";
 import type { BarberSignupData } from "../types";
+import { barberOtp } from "../api";
+import Swal from "sweetalert2";
 
 export const useSignupFlow = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [signupData, setSignupData] = useState<Partial<BarberSignupData>>({
-    verificationType: "phone",
+    verificationType: "email",
     services: [],
     workingHours: { start: "09:00", end: "18:00" },
   });
@@ -25,9 +27,30 @@ export const useSignupFlow = () => {
     }
   };
 
-  const verifyOTP = (otp: string): boolean => {
+  const verifyOTP = async (otp: string): boolean => {
+    try {
+      const payload = {
+        email: "admin@gmail.com",
+        otp,
+      };
+
+      const response = await barberOtp(payload);
+
+      if (response.status === "success") {
+        Swal.fire({
+          title: "Success!",
+          text: "OTP verified successfully",
+          icon: "success",
+          confirmButtonText: "Continue",
+        });
+        return true;
+      }
+    } catch (error) {
+      console.error("OTP verification request failed:", error);
+      return false;
+    }
     // Master OTP bypass
-    return otp === "000" || otp.length === 6;
+    return otp === "310320" || otp.length === 6;
   };
 
   const submitSignup = async () => {

@@ -37,7 +37,7 @@ const BarberSignup: React.FC = () => {
 
   const renderCurrentStep = () => {
     switch (currentStep) {
-      case 1:
+      case 2:
         return (
           <StepOne
             data={signupData}
@@ -45,7 +45,7 @@ const BarberSignup: React.FC = () => {
             onNext={nextStep}
           />
         );
-      case 2:
+      case 1:
         return (
           <StepTwo
             data={signupData}

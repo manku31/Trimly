@@ -4,10 +4,12 @@ import bcrypt from "bcrypt";
 import { prisma } from "../lib/prisma";
 import { TokenServices } from "../utils/tokenService";
 import { EmailService } from "../utils/emailService";
+import { STATUS_CODES } from "http";
 
 export class BarberController {
   async createBarber(req: Request, res: Response) {
     try {
+      console.log("Creating barber with data:", req.body);
       const { name, email, phone, password, confirm_Password } = req.body;
 
       // Validate required fields
@@ -81,6 +83,7 @@ export class BarberController {
       }
 
       return res.status(201).json({
+        status : "success",
         message:
           "Barber created successfully. Please check your email for OTP verification.",
         barber: newBarber,
@@ -167,6 +170,7 @@ export class BarberController {
       });
 
       return res.status(200).json({
+        status : "success",
         message: "Email verified successfully",
         barber: updatedBarber,
         tokens,
@@ -232,6 +236,7 @@ export class BarberController {
       }
 
       return res.status(200).json({
+        status : "success",
         message: "OTP sent successfully to your email",
       });
     } catch (error) {

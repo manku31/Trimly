@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import type { BarberSignupData } from "../../../types";
+import { otpResendBarber } from "../../../api";
 
 interface StepTwoProps {
   data: Partial<BarberSignupData>;
@@ -16,10 +18,18 @@ const StepTwo: React.FC<StepTwoProps> = ({
   onPrev,
   verifyOTP,
 }) => {
+  // console.log("StepTwo data:", data);
   const [otp, setOtp] = useState("");
-  const [timer, setTimer] = useState(30);
+  const [timer, setTimer] = useState(3);
   const [canResend, setCanResend] = useState(false);
   const [error, setError] = useState("");
+
+  // Set email as default verification type
+  useEffect(() => {
+    if (!data.verificationType) {
+      updateData({ verificationType: "email" });
+    }
+  }, [data.verificationType, updateData]);
 
   useEffect(() => {
     if (timer > 0) {
@@ -33,6 +43,17 @@ const StepTwo: React.FC<StepTwoProps> = ({
   }, [timer]);
 
   const handleVerificationType = (type: "email" | "phone") => {
+    if (type === "phone") {
+      Swal.fire({
+        icon: "info",
+        title: "Feature in Progress",
+        text: "Phone verification is currently under development. Please verify using your email address.",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#3b82f6",
+      });
+      return;
+    }
+
     updateData({ verificationType: type });
     setTimer(30);
     setCanResend(false);
@@ -47,11 +68,41 @@ const StepTwo: React.FC<StepTwoProps> = ({
     }
   };
 
-  const handleResendOTP = () => {
-    setTimer(30);
-    setCanResend(false);
-    setError("");
-    // TODO: Implement actual resend OTP logic
+  const handleResendOTP = async () => {
+    try {
+      const payload = {
+        // emial : data.email
+        email: "admin@ertyui.com",
+         
+      };
+
+      const response = await otpResendBarber(payload);
+
+      if (response.status === "success") {
+        Swal.fire({
+          icon: "success",
+          title: "OTP Resent",
+          text: "A new OTP has been sent to your email.",
+          confirmButtonText: "OK",
+          confirmButtonColor: "#3b82f6",
+        }).then(() => {
+          setTimer(30);
+          setCanResend(false);
+          setError("");
+        });
+      }
+    } catch (error) {
+      console.error("Error resending OTP:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.message || "Failed to resend OTP. Please try again.",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#ef4444",
+      }).then(() => {
+        onPrev();
+      });
+    }
   };
 
   return (
@@ -72,25 +123,6 @@ const StepTwo: React.FC<StepTwoProps> = ({
         </label>
         <div className="grid grid-cols-2 gap-4">
           <button
-            onClick={() => handleVerificationType("phone")}
-            className={`p-4 border-2 rounded-lg text-left ${
-              data.verificationType === "phone"
-                ? "border-blue-500 bg-blue-50"
-                : "border-gray-200 hover:border-gray-300"
-            }`}
-          >
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                📱
-              </div>
-              <div>
-                <div className="font-medium">Phone Number</div>
-                <div className="text-sm text-gray-500">{data.phone}</div>
-              </div>
-            </div>
-          </button>
-
-          <button
             onClick={() => handleVerificationType("email")}
             className={`p-4 border-2 rounded-lg text-left ${
               data.verificationType === "email"
@@ -105,6 +137,25 @@ const StepTwo: React.FC<StepTwoProps> = ({
               <div>
                 <div className="font-medium">Email Address</div>
                 <div className="text-sm text-gray-500">{data.email}</div>
+              </div>
+            </div>
+          </button>
+
+          <button
+            onClick={() => handleVerificationType("phone")}
+            className={`p-4 border-2 rounded-lg text-left ${
+              data.verificationType === "phone"
+                ? "border-blue-500 bg-blue-50"
+                : "border-gray-200 hover:border-gray-300"
+            }`}
+          >
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                📱
+              </div>
+              <div>
+                <div className="font-medium">Phone Number</div>
+                <div className="text-sm text-gray-500">{data.phone}</div>
               </div>
             </div>
           </button>
@@ -125,12 +176,12 @@ const StepTwo: React.FC<StepTwoProps> = ({
               setError("");
             }}
             className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter 6-digit code (or 000 for testing)"
+            placeholder="Enter 6-digit code"
             maxLength={6}
           />
           <button
             onClick={handleVerifyOTP}
-            disabled={otp.length < 3}
+            disabled={otp.length < 6}
             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             Verify
@@ -151,21 +202,6 @@ const StepTwo: React.FC<StepTwoProps> = ({
             Resend verification code
           </button>
         )}
-      </div>
-
-      {/* Master OTP Info */}
-      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-        <div className="flex">
-          <div className="text-yellow-600 mr-2">⚡</div>
-          <div>
-            <div className="font-medium text-yellow-800">Testing Mode</div>
-            <div className="text-sm text-yellow-700">
-              Use master OTP:{" "}
-              <code className="bg-yellow-100 px-1 rounded">000</code> to bypass
-              verification
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Navigation */}
