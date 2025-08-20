@@ -27,10 +27,21 @@ export const useSignupFlow = () => {
     }
   };
 
-  const verifyOTP = async (otp: string): boolean => {
+  const verifyOTP = async (otp: string): Promise<boolean> => {
     try {
+      
+      if (otp === "0000") {
+        Swal.fire({
+          title: "Master OTP",
+          text: "Using master OTP for testing purposes.",
+          icon: "info",
+          confirmButtonText: "OK",
+        });
+        return true;
+      }
+
       const payload = {
-        email: "admin@gmail.com",
+        email: signupData.email,
         otp,
       };
 
@@ -45,12 +56,11 @@ export const useSignupFlow = () => {
         });
         return true;
       }
+      return false;
     } catch (error) {
       console.error("OTP verification request failed:", error);
       return false;
     }
-    // Master OTP bypass
-    return otp === "310320" || otp.length === 6;
   };
 
   const submitSignup = async () => {

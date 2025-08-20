@@ -117,10 +117,7 @@ const StepOne: React.FC<StepOneProps> = ({ data, updateData, onNext }) => {
       await Swal.fire({
         icon: "error",
         title: "Signup Failed",
-        text:
-          error instanceof Error
-            ? error.message
-            : "An unexpected error occurred. Please try again.",
+        text:error ? error.message : "An unexpected error occurred. Please try again.",
         confirmButtonColor: "#EF4444",
       });
     } finally {

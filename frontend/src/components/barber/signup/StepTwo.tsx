@@ -8,7 +8,7 @@ interface StepTwoProps {
   updateData: (data: Partial<BarberSignupData>) => void;
   onNext: () => void;
   onPrev: () => void;
-  verifyOTP: (otp: string) => boolean;
+  verifyOTP: (otp: string) => Promise<boolean>;
 }
 
 const StepTwo: React.FC<StepTwoProps> = ({
@@ -23,6 +23,7 @@ const StepTwo: React.FC<StepTwoProps> = ({
   const [timer, setTimer] = useState(3);
   const [canResend, setCanResend] = useState(false);
   const [error, setError] = useState("");
+  const [resendOtpLoading, setResendOtpLoading] = useState(false);
 
   // Set email as default verification type
   useEffect(() => {
@@ -59,25 +60,25 @@ const StepTwo: React.FC<StepTwoProps> = ({
     setCanResend(false);
   };
 
-  const handleVerifyOTP = () => {
-    if (verifyOTP(otp)) {
+  const handleVerifyOTP =  async() => {
+    const isValid = await verifyOTP(otp);
+    if (isValid) {
       updateData({ otp });
       onNext();
     } else {
-      setError("Invalid OTP. Please try again or use master OTP: 000");
+      setError("Invalid OTP. Please try again");
     }
   };
 
   const handleResendOTP = async () => {
     try {
+      setResendOtpLoading(true);
       const payload = {
-        // emial : data.email
-        email: "admin@ertyui.com",
-         
+        email : data.email
       };
 
       const response = await otpResendBarber(payload);
-
+      
       if (response.status === "success") {
         Swal.fire({
           icon: "success",
@@ -86,6 +87,7 @@ const StepTwo: React.FC<StepTwoProps> = ({
           confirmButtonText: "OK",
           confirmButtonColor: "#3b82f6",
         }).then(() => {
+          setResendOtpLoading(false);
           setTimer(30);
           setCanResend(false);
           setError("");
@@ -198,8 +200,9 @@ const StepTwo: React.FC<StepTwoProps> = ({
           <button
             onClick={handleResendOTP}
             className="text-blue-600 hover:text-blue-700 font-medium"
+            disabled={resendOtpLoading}
           >
-            Resend verification code
+            {resendOtpLoading ? "Sending....." : "Resend verification code"}
           </button>
         )}
       </div>
