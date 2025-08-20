@@ -48,6 +48,5 @@ model ShopDetails {
   gst_number String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-
-  barber Barber @relation(fields: [barber_id], references: [barber_id], onDelete: Cascade)
+  barber     Barber   @relation(fields: [barber_id], references: [barber_id], onDelete: Cascade)
 }
