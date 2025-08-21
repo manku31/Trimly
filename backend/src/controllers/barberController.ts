@@ -83,7 +83,7 @@ export class BarberController {
       }
 
       return res.status(201).json({
-        status : "success",
+        status: "success",
         message:
           "Barber created successfully. Please check your email for OTP verification.",
         barber: newBarber,
@@ -170,7 +170,7 @@ export class BarberController {
       });
 
       return res.status(200).json({
-        status : "success",
+        status: "success",
         message: "Email verified successfully",
         barber: updatedBarber,
         tokens,
@@ -236,7 +236,7 @@ export class BarberController {
       }
 
       return res.status(200).json({
-        status : "success",
+        status: "success",
         message: "OTP sent successfully to your email",
       });
     } catch (error) {
@@ -268,7 +268,7 @@ export class BarberController {
 
       // Verify barber exists
       const barber = await prisma.barber.findUnique({
-        where: { barber_id: barberId, verified: true },
+        where: { barber_id: barberId },
       });
 
       if (!barber) {
@@ -304,6 +304,7 @@ export class BarberController {
       });
 
       return res.status(201).json({
+        status: "success",
         message: "Shop created successfully.",
         shop: newShop,
       });
