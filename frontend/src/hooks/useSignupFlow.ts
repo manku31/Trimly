@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { BarberSignupData } from "../types";
-import { barberOtp } from "../api";
+import { barberOtp, createBarberShop } from "../api";
 import Swal from "sweetalert2";
 
 export const useSignupFlow = () => {
@@ -29,8 +29,7 @@ export const useSignupFlow = () => {
 
   const verifyOTP = async (otp: string): Promise<boolean> => {
     try {
-      
-      if (otp === "0000") {
+      if (otp === "000000") {
         Swal.fire({
           title: "Master OTP",
           text: "Using master OTP for testing purposes.",
@@ -64,9 +63,35 @@ export const useSignupFlow = () => {
   };
 
   const submitSignup = async () => {
-    // TODO: Implement actual signup API call
-    console.log("Signup data:", signupData);
-    // Navigate to dashboard
+    try {
+      const payload = {
+        name: signupData.shopName,
+        address: signupData.address,
+        location: signupData.googleLocation,
+        gst_number: signupData.gstNumber,
+        barber_id: signupData.barber_id,
+      };
+
+      const response = await createBarberShop(payload);
+
+      if (response.status === "success") {
+        Swal.fire({
+          title: "Success!",
+          text: "Your barber shop has been created successfully!",
+          icon: "success",
+          confirmButtonText: "Continue",
+          confirmButtonColor: "#16a34a",
+        });
+      }
+    } catch (error) {
+      console.error("Signup submission failed:", error);
+      Swal.fire({
+        title: "Error!",
+        text: error.message || "Failed to create account. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   return {

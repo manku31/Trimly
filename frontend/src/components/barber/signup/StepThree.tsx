@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import type { BarberSignupData } from "../../../types";
+import Swal from "sweetalert2";
 
 interface StepThreeProps {
   data: Partial<BarberSignupData>;
@@ -17,19 +18,6 @@ const StepThree: React.FC<StepThreeProps> = ({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const serviceOptions = [
-    "Haircut",
-    "Beard Trim",
-    "Shave",
-    "Hair Wash",
-    "Hair Styling",
-    "Mustache Trim",
-    "Facial",
-    "Head Massage",
-    "Hair Color",
-    "Eyebrow Trim",
-  ];
-
   const handleInputChange = (
     field: keyof BarberSignupData,
     value: string | string[]
@@ -40,28 +28,11 @@ const StepThree: React.FC<StepThreeProps> = ({
     }
   };
 
-  const handleServiceToggle = (service: string) => {
-    const currentServices = data.services || [];
-    const updatedServices = currentServices.includes(service)
-      ? currentServices.filter((s) => s !== service)
-      : [...currentServices, service];
-
-    handleInputChange("services", updatedServices);
-  };
-
-  const handleWorkingHoursChange = (type: "start" | "end", value: string) => {
-    const workingHours = { ...data.workingHours, [type]: value };
-    updateData({ workingHours });
-  };
-
   const validateStep = () => {
     const newErrors: Record<string, string> = {};
 
     if (!data.shopName?.trim()) newErrors.shopName = "Shop name is required";
     if (!data.address?.trim()) newErrors.address = "Address is required";
-    if (!data.services?.length)
-      newErrors.services = "Select at least one service";
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -71,8 +42,18 @@ const StepThree: React.FC<StepThreeProps> = ({
       setIsSubmitting(true);
       try {
         await onSubmit();
+
       } catch (error) {
         console.error("Signup failed:", error);
+
+        // Error alert
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to create account. Please try again.",
+          icon: "error",
+          confirmButtonText: "Try Again",
+          confirmButtonColor: "#dc2626",
+        });
       } finally {
         setIsSubmitting(false);
       }
@@ -156,70 +137,6 @@ const StepThree: React.FC<StepThreeProps> = ({
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="22AAAAA0000A1Z5"
           />
-        </div>
-
-        {/* Services */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Services Offered *
-          </label>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {serviceOptions.map((service) => (
-              <button
-                key={service}
-                type="button"
-                onClick={() => handleServiceToggle(service)}
-                className={`p-3 border-2 rounded-lg text-sm font-medium transition-colors ${
-                  data.services?.includes(service)
-                    ? "border-blue-500 bg-blue-50 text-blue-700"
-                    : "border-gray-200 hover:border-gray-300 text-gray-700"
-                }`}
-              >
-                {service}
-              </button>
-            ))}
-          </div>
-          {errors.services && (
-            <p className="text-red-500 text-sm mt-1">{errors.services}</p>
-          )}
-          <p className="text-xs text-gray-500 mt-2">
-            Selected: {data.services?.length || 0} services
-          </p>
-        </div>
-
-        {/* Working Hours */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Working Hours
-          </label>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs text-gray-500 mb-1">
-                Opening Time
-              </label>
-              <input
-                type="time"
-                value={data.workingHours?.start || "09:00"}
-                onChange={(e) =>
-                  handleWorkingHoursChange("start", e.target.value)
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-gray-500 mb-1">
-                Closing Time
-              </label>
-              <input
-                type="time"
-                value={data.workingHours?.end || "18:00"}
-                onChange={(e) =>
-                  handleWorkingHoursChange("end", e.target.value)
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
         </div>
       </div>
 

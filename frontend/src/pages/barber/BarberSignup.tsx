@@ -27,8 +27,8 @@ const BarberSignup: React.FC = () => {
   const handleSubmit = async () => {
     try {
       await submitSignup();
-      // Navigate to dashboard after successful signup
-      navigate("/barber/dashboard");
+      // Navigate to login after successful signup
+      navigate("/barber/login");
     } catch (error) {
       console.error("Signup failed:", error);
       // Handle error (show toast, etc.)

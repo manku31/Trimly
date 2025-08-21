@@ -98,9 +98,11 @@ const StepOne: React.FC<StepOneProps> = ({ data, updateData, onNext }) => {
         confirm_Password: data.confirmPassword!,
       };
 
-      const response = (await signupbarber(payload)) as SignupResponse;
+      const response = await signupbarber(payload);
+      // console.log("Signup response:", response);
 
       if (response.status === "success") {
+        updateData(response.barber);
         await Swal.fire({
           icon: "success",
           title: "Signup Successful",
@@ -117,7 +119,9 @@ const StepOne: React.FC<StepOneProps> = ({ data, updateData, onNext }) => {
       await Swal.fire({
         icon: "error",
         title: "Signup Failed",
-        text:error ? error.message : "An unexpected error occurred. Please try again.",
+        text: error
+          ? error.message
+          : "An unexpected error occurred. Please try again.",
         confirmButtonColor: "#EF4444",
       });
     } finally {

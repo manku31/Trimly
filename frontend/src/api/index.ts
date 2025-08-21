@@ -14,3 +14,8 @@ export const barberOtp = async (data : object) => {
     const response = await ApiServices.postMiddlerware("/api/barbers/verify-otp", data);
     return response;
 }
+
+export const createBarberShop = async (data : object) => {
+    const response = await ApiServices.postMiddlerware("/api/barbers/create-shop", data);
+    return response;
+}
