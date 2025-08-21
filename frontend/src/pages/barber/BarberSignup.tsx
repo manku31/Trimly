@@ -31,7 +31,6 @@ const BarberSignup: React.FC = () => {
       navigate("/barber/login");
     } catch (error) {
       console.error("Signup failed:", error);
-      // Handle error (show toast, etc.)
     }
   };
 
